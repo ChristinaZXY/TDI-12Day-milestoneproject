@@ -1,29 +1,23 @@
-<!DOCTYPE html>
+{% extends "layout.html" %}
 
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 order-md-1">
+            <form method='post' action='/'>
+                {{ form.hidden_tag() }}
+                <p>Ticker symbol: <input type='text' name='ticker' placeholder='GOOG' value="" required/></p>
+                <p>Year: <input type='number' name='year' placeholder='2018' value="" style="width: 90px;" required/> Month: <input type='number' name='month' placeholder='1' value="" style="width: 80px;" required/></p>
+                <p>
+                    <input type="checkbox" name='line1' value='Close' />Closing price<br>
+                    <input type="checkbox" name='line2' value='Adj. Close' />Adjusted closing price<br>
+                    <input type="checkbox" name='line3' value='Open' />Opening price<br>
+                    <input type="checkbox" name='line4' value='Adj. Open' />Adjusted opening price<br>
+                </p>
+                <p><input class="btn btn-primary" type="submit" value="Submit"></p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
-
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-  </head>
-  <body>
-      <div class="topnav">
-          <a href="#title">Ticker Lookup App</a>
-          <a class="active" href="#home">Home</a>
-          <a href="#logs">Logs</a>
-          <a href="#contact">Contact</a>
-      </div>
-
-      <div style="padding-left:16px">
-          <h2>Top Navigation Example</h2>
-          <form method="POST">
-              <input name="text">
-              <input type="submit">
-          </form>
-          {% block content %}
-          {% endblock %}
-      </div>
-
-  </body>
-</html>

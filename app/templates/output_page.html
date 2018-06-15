@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!--
+<link rel="stylesheet" href="https://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.css" type="text/css" />
+<script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.13.min.js"></script>
+-->
+<link rel="stylesheet" href={{ cdn_css }} type="text/css" >
+<script type="text/javascript" src={{ cdn_js }}></script>
+<div class="container">
+    <div>
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">Your chart</span>
+          </h4>
+    </div>
+    <div class="center-block">
+    {{script1 | safe}}
+    {{div1 | safe}}
+    </div>
+</div>
+{% endblock %}
+
+
