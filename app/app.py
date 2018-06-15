@@ -17,11 +17,11 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 #app.config.from_object(__name__)
-app.debug = True
+#app.debug = True
 app.config['SECRET_KEY'] = 'webSafetyPurpose'
 Bootstrap(app)
 nav = Nav(app)
-toolbar = DebugToolbarExtension(app)
+#toolbar = DebugToolbarExtension(app)
 
 class inputForm(FlaskForm):
     ticker = StringField('ticker', validators=[validators.required()])
