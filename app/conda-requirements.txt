@@ -5,3 +5,8 @@ flask
 jinja2
 pip
 simplejson
+flask_debugtoolbar
+wtforms
+flask_wtf
+flask_nav
+flask_bootstrap
