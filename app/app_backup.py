@@ -1,3 +1,4 @@
+# app.py version before keeping the API key secret.  Also changed the redirect method to make a GET request directly from the frontend to this graph page.
 from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 try: import simplejson as json
@@ -33,36 +34,46 @@ class inputForm(FlaskForm):
     line3 = BooleanField('line3')
     line4 = BooleanField('line4')
 
-@app.route('/')
+@app.route('/', methods=['POST','GET'])
 def index():
     form = inputForm()
+
+    if form.validate_on_submit():
+        ticker = form.ticker.data
+        ticker = ticker.upper()
+        year = form.year.data
+        month = form.month.data
+        lines = []
+        if form.line1.data:
+            lines.append('Close')
+        if form.line2.data:
+            lines.append('Adj. Close')
+        if form.line3.data:
+            lines.append('Open')
+        if form.line4.data:
+            lines.append('Adj. Open')
+        return redirect(url_for('graph', ticker=ticker, year=year, month=month, lines=lines))
+    else:
+        print(form.errors)
+
     return render_template('input_page.html', form=form)
 
-@app.route('/graph', methods=['POST'])
-def graph():
 
-    ticker = request.form.get('ticker')
-    year = request.form.get('year')
-    month = request.form.get('month')
-    line1 = request.form.get('line1')
-    line2 = request.form.get('line2')
-    line3 = request.form.get('line3')
-    line4 = request.form.get('line4')
+@app.route('/graph/<ticker>/<year>/<month>/<lines>') # /<ticker>/<year>/<month>/<lines>
+def graph(ticker, year, month, lines): # ticker, year, month, lines
 
-    ticker = ticker.upper()
+    # ticker = request.args.get('ticker')
+    # year = int(request.args.get('year'))
+    # month = int(request.args.get('month'))
+    # lines = request.args.get('lines')
+
+    # today = datetime.date.today()
+    # firstdaythismonth = today.replace(day=1)
+    # lastdaylastmonth = firstdaythismonth - datetime.timedelta(days=1)
+    # onemonthago = lastdaylastmonth.replace(day=today.day)
+
     year = int(year)
     month = int(month)
-    lines = []
-    if line1:
-        lines.append('Close')
-    if line2:
-        lines.append('Adj. Close')
-    if line3:
-        lines.append('Open')
-    if line4:
-        lines.append('Adj. Open')
-
-
     datestart = datetime.date(year, month, 1)
     dateend = datetime.date(year, month, monthrange(year, month)[1])
 
@@ -73,7 +84,7 @@ def graph():
 
     Colors = {'Close': 'navy', 'Adj. Close': 'cyan', 'Open': 'firebrick', 'Adj. Open': 'salmon'}
     p = figure(x_axis_type="datetime", plot_width=800, plot_height=500)
-
+    lines = eval(lines) # convert the string form of a list back to a list
     for line in lines:
         p.line(x=df['Date'], y=df[line], color=Colors[line], legend=line, line_width=2)
     p.title.text = 'Quandl WIKI Stock Prices - selected month (interactive legends: click to hide)'
@@ -87,6 +98,7 @@ def graph():
     cdn_css = CDN.css_files[0]
 
     return render_template('output_page.html', script1=script1, div1=div1, cdn_css=cdn_css, cdn_js=cdn_js, template="Flask")
+
 
 if __name__ == '__main__':
     # app.run(debug=True)
