@@ -1,4 +1,4 @@
-# app.py version before keeping the API key secret.  Also changed the redirect method to make a GET request directly from the frontend to this graph page.
+# app.py old version before keeping the API key secret. Also changed the redirect method to make a GET request directly from the frontend to the graph page.
 from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_debugtoolbar import DebugToolbarExtension
 try: import simplejson as json
@@ -56,7 +56,7 @@ def index():
     else:
         print(form.errors)
 
-    return render_template('input_page.html', form=form)
+    return render_template('input_page_backup.html', form=form)
 
 
 @app.route('/graph/<ticker>/<year>/<month>/<lines>') # /<ticker>/<year>/<month>/<lines>
